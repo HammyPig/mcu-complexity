@@ -1,5 +1,5 @@
 \documentclass{report}
-
+\usepackage{apacite}
 \begin{document}
 
 \chapter{Time Stone}
@@ -31,76 +31,13 @@ When activated, the TS alters the automaton, sending it forward in time to $q_{e
 
 We define a new MCU complexity class, which in this case defines the number of times the TS must be activated.
 
-\subsection{P = NP}
+\subsection{P = EXPTIME}
 
-We create a proof by doing the following:
+Given an arbitrary TM in P, we activate the TS, sending it forward in time to $q_{end}$. Therefore, its running time has been reduced to $O(1)$.
 
-\begin{enumerate}
-  \item Prove using a TS on an arbitrary deterministic TM that is assumed to halt will result in a time complexity of O(1).
-  \item Simulate a non-deterministic TM on a deterministic TM.
-  \item Use steps 1 and 2 to show when using the TS, NP problems have a time complexity of O(1), hence P = NP.
-\end{enumerate}
+Given an arbitrary TM in EXPTIME, we activate the TS, sending it forward in time to $q_{end}$. Therefore, its running time has been reduced to $O(1)$.
 
-\subsubsection{Step 1: TS and deterministic TM interactions}
-
-\textit{Use the time stone to send a deterministic Turing machine forward in time to its end state such that its time complexity is reduced to $O(1)$.}\\
-
-Get any arbitrary deterministic TM that is assumed to halt.
-
-We get the TS components:
-
-\begin{itemize}
-  \item R is the deterministic run of the TM.
-  \item There exists a $q_{end}$ step, as the algorithm is assumed to halt.
-\end{itemize}
-
-We place the TM into its initial step. We activate the TS, sending the TM forward in time to $q_{end}$, where it either halt-accepts or halt-rejects. This takes $O(1)$ time complexity.
-
-The arbitrary deterministic TM, using the TS with an MCU complexity of O(1), has now halted in $O(1)$ time.
-
-We conclude that all deterministic TMs assumed to halt now have a time complexity of $O(1)$ and MCU complexity of $O(1)$ when using a TS.
-
-\subsubsection{Step 2: Simulating a non-deterministic TM using a deterministic TM}
-
-\textit{Have a TM that uses another TM to dictate which path to take at any non-deterministic choice using a BFS, where eventually all paths of the non-deterministic tree are taken. Therefore, the entire process is now deterministic in nature.}\\
-
-We construct a TM containing three tapes.
-
-\subsubsection{The Computer}
-
-The first tape, \textit{the computer}, is designed to do an arbitrary run of some non-deterministic TM that is assumed to halt.
-
-At each non-deterministic step, when facing an $x$ number of choices, each choice is labelled from 0 to $x-1$ such that the step can be chosen deterministically via an external input.
-
-If the input path does not exist, the TM will halt-reject with an additional output specifying that the input path did not exist.
-
-The tape, otherwise, can halt-reject or halt-accept as normal.
-
-\subsubsection{The Echo}
-
-The second tape, \textit{the echo}, simply retains the initial step of \textit{the computer}. It can copy its contents to \textit{the computer}, such that it can return to its initial step after leaving it. Corollary, \textit{the echo} shares the arbitrary tape language of \textit{the computer}.
-
-\subsubsection{The Decider}
-
-The third tape, \textit{the decider}, is designed to determine which route \textit{the computer} will take given a non-deterministic step.
-
-The input language consists of the set of natural numbers, and runs a BFS to determine what choice will be made when given a non-deterministic choice.
-
-\subsubsection{Usage}
-
-When ran, eventually, the BFS will either:
-\begin{itemize}
-  \item reach a halt-accept state
-  \item iterate through the entire tree and find no halt-accept state, and therefore will halt-reject.
-\end{itemize}
-
-The non-deterministic TM has now been simulated using a deterministic multi-tape TM. Multi-tape TMs area equivalent to single-tape TMs, therefore we conclude all non-deterministic algorithms that are assumed to halt can be converted to deterministic algorithms that are assumed to halt.
-
-\subsubsection{Step 3: TS and simulated non-deterministic TM interactions}
-As we have concluded that all non-deterministic TMs that are assumed to halt can be simulated using a deterministic TM, and all deterministic TMs when using a TS have a time complexity of $O(1)$, we conclude that all non-deterministic TMs which are assumed to halt, when using a TS, have a time complexity of $O(1)$ and MCU complexity of $O(1)$.
-
-Therefore, as all P and NP problems halt, we conclude that given access to a TS, P = NP.
-
+Clearly, given access to a TS, P = EXPTIME.
 
 \subsection{Halting Problem}
 
@@ -128,9 +65,11 @@ When activated, the TS alters the automaton, speeding up its operation by a fact
 
 \subsection{P = NP}
 
-We simulate an arbitrary non-deterministic TM that is assumed to halt on a deterministic TM (specifically, using the BFS method from the previous definition).
+We simulate an arbitrary non-deterministic TM that is assumed to halt on a deterministic TM. \cite{simulate-non-determinisim}
 
-As we traverse the BFS tree, the number of nodes at each level  increases by a upperbound factor of $n$, where $n$ is the maximum number of non-deterministic choices at some step in the non-deterministic TMs code.
+The non-deterministic TM can be represented as a tree of non-deterministic choices, where a TM running a BFS simulate non-deterministic behaviour deterministically by iterating through each node at every level of the tree until the TM halts.
+
+As we traverse the BFS tree, the number of nodes at each level increases by a upperbound factor of $n$, where $n$ is the maximum number of non-deterministic choices at some step in the non-deterministic TMs code.
 
 At each level $h$ of the tree, if we activate the TS to speed up the TM by a factor of $n*h$, clearly, we will run through the entire level less than or equal to the time it would take to run a single step.
 
@@ -152,5 +91,8 @@ As we know that $1 + 0.5 + 0.25 + 0.125 ... \le 2$, after 2 seconds of computati
 Again, the consequence of this concept is we now have a device that determines if a given TM will halt.
 
 Therefore, this definition cannot exist.
+
+\bibliographystyle{apacite}
+\bibliography{references}
 
 \end{document}
