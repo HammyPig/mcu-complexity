@@ -17,63 +17,60 @@
   \item Does not cause issues in causality.
 \end{itemize}
 
-\section{Formal Definition}
+\newpage
+\section{Formal Definition and Consequences (First Attempt)}
 
-A TS is a tuple T = (R, $q_0$, qend)
+A TS is a tuple T = (R, $q_{end}$)
 
 \begin{itemize}
   \item R is a deterministic run of some automata which is assumed to halt.
-  \item $q_0$ is the initial step of the run.
-  \item qend the final step of the run.
-  \item direction is the desired flow of time, either forward or backwards.
+  \item $q_{end}$ the final step of the run.
 \end{itemize}
 
-When activated, the TS has the capability to alter an automaton, sending it either forward in time to qend, or back in time to $q_0$, depending on the TS's given input. This process is assumed to take no computational power and is a constant O(1) in time complexity.
+When activated, the TS alters the automaton, sending it forward in time to $q_{end}$. This process is assumed to take no computational power and is a constant $O(1)$ in time and memory complexity.
 
 We define a new MCU complexity class, which in this case defines the number of times the TS must be activated.
 
-\section{P = NP when using a TS}
+\subsection{P = NP}
 
 We create a proof by doing the following:
 
 \begin{enumerate}
   \item Prove using a TS on an arbitrary deterministic TM that is assumed to halt will result in a time complexity of O(1).
-  \item Create an algorithm that simulates any non-deterministic TM on a deterministic TM.
+  \item Simulate a non-deterministic TM on a deterministic TM.
   \item Use steps 1 and 2 to show when using the TS, NP problems have a time complexity of O(1), hence P = NP.
 \end{enumerate}
 
-\subsection{Step 1: TS and deterministic TM interactions}
+\subsubsection{Step 1: TS and deterministic TM interactions}
 
-\textit{Use the time stone to send a deterministic Turing machine forward in time to its end state such that its time complexity is reduced to O(1).}
+\textit{Use the time stone to send a deterministic Turing machine forward in time to its end state such that its time complexity is reduced to $O(1)$.}\\
 
-Get any arbitrary deterministic TM.
-
-We assume the TM halts. The TM therefore has some arbitrary running time.
+Get any arbitrary deterministic TM that is assumed to halt.
 
 We get the TS components:
 
 \begin{itemize}
   \item R is the deterministic run of the TM.
-  \item $q_0$ is the initial step of the run.
-  \item There exists a qend step, as the algorithm is assumed to halt.
-  \item We place the TM into its initial step. We activate the TS, altering the automaton and sending it forward in time to qend, where it either halt-accepts or halt-rejects. This takes O(1) time complexity.
+  \item There exists a $q_{end}$ step, as the algorithm is assumed to halt.
 \end{itemize}
 
-The arbitrary deterministic TM, using the TS with an MCU complexity of O(1), has now halted in O(1) time.
+We place the TM into its initial step. We activate the TS, sending the TM forward in time to $q_{end}$, where it either halt-accepts or halt-rejects. This takes $O(1)$ time complexity.
 
-We conclude that all deterministic TMs - given the assumption that the TM halts - have a time complexity of O(1) and MCU complexity of O(1) when using a TS.
+The arbitrary deterministic TM, using the TS with an MCU complexity of O(1), has now halted in $O(1)$ time.
 
-\subsection{Step 2: Simulating a non-deterministic TM using a deterministic TM}
+We conclude that all deterministic TMs assumed to halt now have a time complexity of $O(1)$ and MCU complexity of $O(1)$ when using a TS.
 
-\textit{Have an external input dictate which path to take at any non-deterministic choice using a DFS, where eventually all paths are run. Therefore, the entire process is now deterministic in nature.}
+\subsubsection{Step 2: Simulating a non-deterministic TM using a deterministic TM}
+
+\textit{Have a TM that uses another TM to dictate which path to take at any non-deterministic choice using a BFS, where eventually all paths of the non-deterministic tree are taken. Therefore, the entire process is now deterministic in nature.}\\
 
 We construct a TM containing three tapes.
 
 \subsubsection{The Computer}
 
-The first tape, the computer, is designed to do an arbitrary run of some non-deterministic algorithm. It is assumed we know the worst-case running time of the algorithm.
+The first tape, \textit{the computer}, is designed to do an arbitrary run of some non-deterministic TM that is assumed to halt.
 
-At each non-deterministic step, when facing an x number of choices, each choice is labelled from 0 to x-1 such that the step can be chosen deterministically via an external input. 
+At each non-deterministic step, when facing an $x$ number of choices, each choice is labelled from 0 to $x-1$ such that the step can be chosen deterministically via an external input.
 
 If the input path does not exist, the TM will halt-reject with an additional output specifying that the input path did not exist.
 
@@ -81,59 +78,27 @@ The tape, otherwise, can halt-reject or halt-accept as normal.
 
 \subsubsection{The Echo}
 
-The second tape, the echo, simply retains the initial step of the computer. It can copy its contents to the computer, such that it can return to its initial step after leaving it. The third tape shares the arbitrary tape language of the computer.
+The second tape, \textit{the echo}, simply retains the initial step of \textit{the computer}. It can copy its contents to \textit{the computer}, such that it can return to its initial step after leaving it. Corollary, \textit{the echo} shares the arbitrary tape language of \textit{the computer}.
 
 \subsubsection{The Decider}
 
-The third tape, the decider, is designed to determine which route the computer will take given a non-deterministic step.
+The third tape, \textit{the decider}, is designed to determine which route \textit{the computer} will take given a non-deterministic step.
 
-The input language consists of the set of natural numbers, where the ith cell determines the ith choice the first tape will make. I.e., if the first cell contains a '0', the first non-deterministic step will choose the first choice presented. If the second cell then contained a '3', the next step will choose the 4th choice presented.
-The decider is also the final output of the entire TM.
+The input language consists of the set of natural numbers, and runs a BFS to determine what choice will be made when given a non-deterministic choice.
 
 \subsubsection{Usage}
 
-The decider will iterate through all the possible combinations of non-deterministic choices via the following recursive definition:
+When ran, eventually, the BFS will either:
+\begin{itemize}
+  \item reach a halt-accept state
+  \item iterate through the entire tree and find no halt-accept state, and therefore will halt-reject.
+\end{itemize}
 
-\begin{enumerate}
-  \item The decider will be initialised with x amount of 0's, where x is the maximum number of steps the algorithm will require in a run. The tape head is moved to the last 0.
-  \item The tape will output its content to the computer and waits for it to accept or reject.
-  \item The decider then reads the computer's output, such that:
-  
-  \begin{enumerate}
-    \item If the computer outputs a halt-reject:
-    
-    \begin{enumerate}
-      \item increment the current cell by 1.
-      \item activate the echo to return the computer to its initial step.
-      \item go to step 2.
-    \end{enumerate}
+The non-deterministic TM has now been simulated using a deterministic multi-tape TM. Multi-tape TMs area equivalent to single-tape TMs, therefore we conclude all non-deterministic algorithms that are assumed to halt can be converted to deterministic algorithms that are assumed to halt.
 
-    \item Else if the computer outputs a halt-reject, specifying the input path did not exist:
-    
-    \begin{enumerate}
-      \item mark the current cell.
-      \item set all non-empty cells to the right to 0.
-      \item move back to the marked cell, set it to 0.
-      \item move left.
-      \item if a blank symbol is encountered, halt-reject, else increment the cell by 1 and move to the last cell.
-      \item activate the echo to return the computer to its initial step.
-    \end{enumerate}
+\subsubsection{Step 3: TS and simulated non-deterministic TM interactions}
+As we have concluded that all non-deterministic TMs that are assumed to halt can be simulated using a deterministic TM, and all deterministic TMs when using a TS have a time complexity of $O(1)$, we conclude that all non-deterministic TMs which are assumed to halt, when using a TS, have a time complexity of $O(1)$ and MCU complexity of $O(1)$.
 
-    \item Else, if the computer outputs a halt-accept:
-    
-    \begin{enumerate}
-      \item halt-accept
-    \end{enumerate}
-
-  \end{enumerate}
-
-\end{enumerate}
-
-The non-deterministic algorithm has now been simulated using a deterministic multi-tape TM. Multi-tape TMs area equivalent to single-tape TMs, therefore we conclude all non-deterministic algorithms that are assumed to halt can be converted to deterministic algorithms that are assumed to halt. 
-
-\subsection{TS and non-deterministic TM interactions}
-As we have concluded that all non-deterministic algorithms that are assumed to halt can be converted to deterministic algorithms that are assumed to halt, we conclude that all non-deterministic TMs which are assumed to halt, when using a TS, have a time complexity of O(1) and MCU complexity of O(1).
-
-Therefore, as all P and NP problems halt, we conclude that assuming we know the time complexity of all NP problems, given access to a TS, P = NP.
+Therefore, as all P and NP problems halt, we conclude that given access to a TS, P = NP.
 
 \end{document}
