@@ -18,7 +18,7 @@
 \end{itemize}
 
 \newpage
-\section{Formal Definition and Consequences (First Attempt)}
+\section{Definition and Consequences (1st Attempt)}
 
 A TS is a tuple T = (R, $q_{end}$)
 
@@ -100,5 +100,57 @@ The non-deterministic TM has now been simulated using a deterministic multi-tape
 As we have concluded that all non-deterministic TMs that are assumed to halt can be simulated using a deterministic TM, and all deterministic TMs when using a TS have a time complexity of $O(1)$, we conclude that all non-deterministic TMs which are assumed to halt, when using a TS, have a time complexity of $O(1)$ and MCU complexity of $O(1)$.
 
 Therefore, as all P and NP problems halt, we conclude that given access to a TS, P = NP.
+
+
+\subsection{Halting Problem}
+
+In our formal definition, we state the given input TM is assumed to halt. However, this is a very weak assumption to make.
+
+Let's attempt to bypass this requirement and instead see what happens when we run the TS on a TM which does not necessarily halt.
+
+When activated, the TS alters the TM, sending it forward in time to $q_{end}$. This process is assumed to take no computational power and is a constant $O(1)$ in time and memory complexity.
+
+Clearly if the TM does halt, it is sent forward in time to $q_{end}$ as normal. However, what would occur if the TM was an infinite loop? Answering anything other than "the TM is sent forward in time to $q_{end}$ as normal" inherently contradicts the halting problem, as if we define this new behaviour in any way that differs from the original, as a consequence we have created a device which determines if a given TM will halt.
+
+Therefore, this definition cannot exist.
+
+\newpage
+\section {Definition and Consequences (2nd Attempt)}
+
+A TS is a tuple T = ($R$, $c$)
+
+\begin{itemize}
+  \item $R$ is a deterministic run of some automata which is assumed to halt.
+  \item $c$ is a constant multiplier, and accepts the input language of $\mathbf{N}$.
+\end{itemize}
+
+When activated, the TS alters the automaton, speeding up its operation by a factor of $c$. This process is assumed to take no computational power and is a constant $O(1)$ in time and memory complexity.
+
+\subsection{P = NP}
+
+We simulate an arbitrary non-deterministic TM that is assumed to halt on a deterministic TM (specifically, using the BFS method from the previous definition).
+
+As we traverse the BFS tree, the number of nodes at each level  increases by a upperbound factor of $n$, where $n$ is the maximum number of non-deterministic choices at some step in the non-deterministic TMs code.
+
+At each level $h$ of the tree, if we activate the TS to speed up the TM by a factor of $n*h$, clearly, we will run through the entire level less than or equal to the time it would take to run a single step.
+
+Therefore, it will now run in the same time as a true non-deterministic TM.
+
+Therefore, when using a TS, P = NP.
+
+\subsection{Halting Problem}
+
+We get any arbitrary TM and modify it such that at every step, an output is given to the TS to double its own multiplier speed. I.e., the first step will take 1 second to compute, the next step will take 0.5 seconds to compute, 0.25s, 0.125s ...
+
+As we know that $1 + 0.5 + 0.25 + 0.125 ... \le 2$, after 2 seconds of computation, we would have ran an infinite number of steps on this TM and will observe two possibilities:
+
+\begin{enumerate}
+  \item The TM will have halted as it has completed some $N$ amount of steps.
+  \item The TM will continues running as it is in an infinite loop.
+\end{enumerate}
+
+Again, the consequence of this concept is we now have a device that determines if a given TM will halt.
+
+Therefore, this definition cannot exist.
 
 \end{document}
