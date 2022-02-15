@@ -31,13 +31,13 @@ When activated, the TS alters the automaton, sending it forward in time to $q_{e
 
 We define a new MCU complexity class, which in this case defines the number of times the TS must be activated.
 
-\subsection{P = EXPTIME}
+\subsection{$P_{TS} = EXPTIME_{TS}$}
 
 Given an arbitrary TM in P, we activate the TS, sending it forward in time to $q_{end}$. Therefore, its running time has been reduced to $O(1)$.
 
 Given an arbitrary TM in EXPTIME, we activate the TS, sending it forward in time to $q_{end}$. Therefore, its running time has been reduced to $O(1)$.
 
-Clearly, given access to a TS, P = EXPTIME.
+Clearly, $P_{TS} = EXPTIME_{TS}$.
 
 \subsection{Halting Problem}
 
@@ -63,7 +63,7 @@ A TS is a tuple T = ($R$, $c$)
 
 When activated, the TS alters the automaton, speeding up its operation by a factor of $c$. This process is assumed to take no computational power and is a constant $O(1)$ in time and memory complexity.
 
-\subsection{P = NP}
+\subsection{$P_{TS} = NP_{TS}$}
 
 We simulate an arbitrary non-deterministic TM that is assumed to halt on a deterministic TM. \cite{simulate-non-determinisim}
 
@@ -75,7 +75,7 @@ At each level $h$ of the tree, if we activate the TS to speed up the TM by a fac
 
 Therefore, it will now run in the same time as a true non-deterministic TM.
 
-Therefore, when using a TS, P = NP.
+Therefore, $P_{TS} = NP_{TS}$.
 
 \subsection{Halting Problem}
 
