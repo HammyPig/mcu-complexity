@@ -130,21 +130,23 @@ Therefore, it is impossible to determine whether a TM will halt or loop forever,
 
 \subsection{$O(\infty)$ Extension}
 
-Could we extend the capabilities of our definition without disrupting the laws of the halting problem? Let us modify the input language to accept an additional complexity class $O(\infty)$, such that given an infinitely looped TM, we can activate the TS with an input of $O(\infty)$, which we assume runs the TM an infinite amount of times in constant time, after which it then halts.
+Could we extend the capabilities of our definition without contradicting the laws of the halting problem? Let us modify the input language to accept an additional complexity class $O(\infty)$, such that given an infinitely looped TM, we can activate the TS with an input of $O(\infty)$, which we assume runs the TM an infinite amount of times in constant time, after which it then halts.
 
-However, this extension does not contradict the halting problem. As a reminder, we only have a device that contradicts the halting problem if the behavior of the device is inconsistent. From our definition we have $O(x)/O(x) = O(1)$ and $O(x)/O(>x) = O(1)$, implying that for both problems that infinitely loop and problems which exceed $O(n!)$ complexity, we experience the same behaviour, and therefore, it is impossible to determine which is the case.
+This extension does not contradict the halting problem. As a reminder, we only have a device that contradicts the halting problem if the behavior of the device is inconsistent. From our definition we have $O(x)/O(x) = O(1)$ and $O(x)/O(>x) = O(1)$, implying that for both problems that infinitely loop and problems which exceed $O(n!)$ complexity, we experience the same behaviour. Therefore, it is impossible to determine if a TM halts or loops from our definition.
 
-Great, the TS now has the capability to run ALL time complexities in constant time. But not so fast. Of course, what "running an infinite loop to completion" is still up for debate. Any definition must be consistent with programs which do halt. Therefore, the only definition we are able to apply is an infinitely looped sequence will look the exact same as a sequence which is designed to halt.
+Great, the TS now has the capability to run ALL time complexities in constant time. But not so fast. Of course, what "running an infinite loop to completion" still needs to be clarified.
 
-Let's consider an example of an infinitely looped sequence that iterates one cell of a TM. We activate the TS, sending it to completion. Once this process is "finished", we are left with an infinite series, which we will simply read as many digits as we can until we get tired out. Corollary, it is impossible to determine if the sequence of numbers will terminate, as we can always simply say "the sequence of numbers does terminate, we just need to read $n$ more digits!"
+\subsubsection{Defining $O(\infty)$ Completion}
 
-But hold on, wouldn't we be able to create a TM which reads this one cell to completion by using the TS? Wouldn't this then start to break things? Well no, because the TM would simply record the exact same infinite series that would be painstakingly long to read, and the process would start all over again.
+Any definition must be consistent with programs which do halt. Therefore, the end result of an infinitely looped sequence must be indistinguishable from those designed to halt.
 
-But what if we created the same TM, which read the infinite sequence but instead was only meant to store the \textit{last} digit. Clearly, this would be possible for a finite sequence of digits, so what behaviour would occur with an infinite sequence?
+Let's consider a simple example of an infinitely looped sequence that iterates through the natural numbers in one cell of a TM. We activate the TS, sending it to completion.
 
-The question is paradoxical in nature, as there exists no last digit of an infinite sequence. As we now have behavior which is inconsistent, our definition is no longer valid.
+Once this process is "finished", we cannot define it such that there is simply a $\infty$ symbol left behind (as this will determine if the iterator indeed ran an infinite number of times), instead, we would need to be left with an infinitely large digit. Corollary, it is impossible to determine if the output digit is indeed infinite, as when reading the series out, we can always simply say "we don't know if the sequence of numbers is infinite, maybe we just need to read $n$ more digits!" This therefore does not contradict the halting problem, which is a good start.
 
-Unless we redefine the halting problem, there will always be some upperbound limit to the capabilities of time travel on computation.
+But what if by extension, we created an additional TM which read this infinite sequence, sped it up infinitely, and once completed, it is instructed to store only the \textit{last} digit. Clearly, this would be possible for a finite sequence of digits, so what behaviour would occur with an infinite sequence?
+
+The question is paradoxical in nature, as there exists no last digit of an infinite sequence. As we now have behavior which is inconsistent, our definition is no longer valid and therefore this extension is invalid.
 
 \bibliographystyle{IEEEtran}
 \bibliography{references}
