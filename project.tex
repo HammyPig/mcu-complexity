@@ -92,6 +92,60 @@ Again, the consequence of this concept is we now have a device that determines i
 
 Therefore, this definition cannot exist.
 
+\newpage
+\section{Definition and Consequences (3rd Attempt)}
+
+A TS is a tuple T = ($M$, $O$)
+
+\begin{itemize}
+  \item $M$ is some TM.
+  \item $O$ is a time complexity factor, and accepts the input language of the set $\{O(1), O(n^c), O(c^n), O(n!)\}$
+\end{itemize}
+
+When activated, the TS alters the TM, dividing its time complexity by a factor of $O$. This process is assumed to take no computational power and is a constant $O(1)$ in time and memory complexity.
+
+\subsection{Division Behaviour}
+
+The set of time complexities defined above are ordinal, and are defined without loss of generality by the following division rules:
+
+\begin{itemize}
+  \item $O(x)/O(x) = O(1)$
+  \item $O(x)/O(>x) = O(1)$
+  \item $O(x)/O(<x) = O(x)$
+\end{itemize}
+
+\subsection{$P_{TS} = EXPTIME_{TS}$}
+
+Given an arbitrary TM in P, we activate the TS with an input of $O(n^c)$. As all problems in P have a time complexity of $O(n^c)$, $O(n^c)/O(n^c) = O(1)$. Therefore, its running time has been reduced to $O(1)$.
+
+Given an arbitrary TM in EXPTIME, we activate the TS with an input of $O(c^n)$. As all problems in P have a time complexity of $O(c^n)$, $O(c^n)/O(c^n) = O(1)$. Therefore, its running time has been reduced to $O(1)$.
+
+Clearly, $P_{TS} = EXPTIME_{TS}$.
+
+\subsection{Halting Problem and Limitations}
+
+As there is an upperbound time complexity of $O(n!)$, and through our definition we defined $O(x)/O(<x) = O(x)$, any problem which exceeds $O(n!)$ complexity will not be solvable in constant time.
+
+Therefore, it is impossible to determine whether a TM will halt or loop forever, as there is no opportunity for such behaviour to differ. Therefore, our definition is robust in this regard.
+
+\subsection{$O(\infty)$ Extension}
+
+Could we extend the capabilities of our definition without disrupting the laws of the halting problem? Let us modify the input language to accept an additional complexity class $O(\infty)$, such that given an infinitely looped TM, we can activate the TS with an input of $O(\infty)$, which we assume runs the TM an infinite amount of times in constant time, after which it then halts.
+
+However, this extension does not contradict the halting problem. As a reminder, we only have a device that contradicts the halting problem if the behavior of the device is inconsistent. From our definition we have $O(x)/O(x) = O(1)$ and $O(x)/O(>x) = O(1)$, implying that for both problems that infinitely loop and problems which exceed $O(n!)$ complexity, we experience the same behaviour, and therefore, it is impossible to determine which is the case.
+
+Great, the TS now has the capability to run ALL time complexities in constant time. But not so fast. Of course, what "running an infinite loop to completion" is still up for debate. Any definition must be consistent with programs which do halt. Therefore, the only definition we are able to apply is an infinitely looped sequence will look the exact same as a sequence which is designed to halt.
+
+Let's consider an example of an infinitely looped sequence that iterates one cell of a TM. We activate the TS, sending it to completion. Once this process is "finished", we are left with an infinite series, which we will simply read as many digits as we can until we get tired out. Corollary, it is impossible to determine if the sequence of numbers will terminate, as we can always simply say "the sequence of numbers does terminate, we just need to read $n$ more digits!"
+
+But hold on, wouldn't we be able to create a TM which reads this one cell to completion by using the TS? Wouldn't this then start to break things? Well no, because the TM would simply record the exact same infinite series that would be painstakingly long to read, and the process would start all over again.
+
+But what if we created the same TM, which read the infinite sequence but instead was only meant to store the \textit{last} digit. Clearly, this would be possible for a finite sequence of digits, so what behaviour would occur with an infinite sequence?
+
+The question is paradoxical in nature, as there exists no last digit of an infinite sequence. As we now have behavior which is inconsistent, our definition is no longer valid.
+
+Unless we redefine the halting problem, there will always be some upperbound limit to the capabilities of time travel on computation.
+
 \bibliographystyle{apacite}
 \bibliography{references}
 
